@@ -1,0 +1,4 @@
+arrMemCached = {
+	arrMemcachedServers:['localhost']
+}
+
