@@ -5,5 +5,5 @@
 */
 
 require_once('Classes/System/Autoloader.class.php');
-\Xizlr\Autoloader::Register();
+\Xizlr\System\Autoloader::Register();
 

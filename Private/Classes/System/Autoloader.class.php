@@ -4,19 +4,30 @@
 *
 */
 
-namespace Xizlr;
+namespace Xizlr\System;
 
 class Autoloader{
+	private static $objAutoloaderInstance = null;
 	
 	public static function Register(){
-		$objAutoloader = new Autoloader;
-		spl_autoload_register(array($objAutoloader, 'Load'));
-		return objAutoloader;
+		if(self::$objAutoloaderInstance === null) {
+			self::$objAutoloaderInstance = new Autoloader();
+			spl_autoload_register(array(self::$objAutoloaderInstance, 'Load'));		
+		} 
+		
+		return self::$objAutoloaderInstance;
 	}
 	
 	private function Load($strClassName){
-echo "hello!";		
-exit;
+		$arrClassParts = explode('\\',$strClassName);
+		$strNamespace = array_shift($arrClassParts);
+	
+		if($strNamespace == 'Xizlr'){
+			$strFilepath = __DIR__.'/../'.implode('/',$arrClassParts).'.class.php';
+			require_once($strFilepath);
+		}else{
+			return null;
+		}
 	}
 }
 

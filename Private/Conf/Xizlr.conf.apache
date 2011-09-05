@@ -1,6 +1,8 @@
 RewriteEngine on
 
-RewriteRule ^/Xi/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/(.*) /Index.php?Context=$1&Module=$2&Section=$3&Resource=$4&Action=$5&ArgumentList=$6 [L]
+RewriteRule ^/Xi/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/(.*) /Index.php?Application=$1&Sreen=$2&Context=$3&Section=$4&Resource=$5&Action=$6&ArgumentList=$7 [L]
+
+#/Xi/Memster/Desktop/HTML/Users/Accounts/Add/0/3
 
 RewriteLog "/var/log/apache2/xizlr.rewrite.log"
 RewriteLogLevel 3
