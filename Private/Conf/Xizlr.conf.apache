@@ -1,0 +1,6 @@
+RewriteEngine on
+
+RewriteRule ^/Xi/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/(.*) /Index.php?Context=$1&Module=$2&Section=$3&Resource=$4&Action=$5&ArgumentList=$6 [L]
+
+RewriteLog "/var/log/apache2/xizlr.rewrite.log"
+RewriteLogLevel 3
