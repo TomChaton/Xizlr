@@ -12,16 +12,30 @@ class FrontController{
 		$arrInvalidCharacters = array('.','\\',',',')','(','"','\'',';','$','*','/');
 		return $arrInvalidCharacters;
 	}
+	
+	public function GetControllerPath($strApplication, $strSection, $strController){
+		$objXilzrConfig        = \Xizlr\Models\Config::GetInstance('Xizlr');
+		$objApplicationConfig  = \Xizlr\Models\Config::GetInstance($strApplication);
 		
-	public function Run(){
+		$strControllerPath =  $objApplicationConfig->arrEnvironment['strBaseDir'].'/Private/Classes/Controllers/'.$strSection.'/'.$strController.'.class.php';
+		if(is_file($strControllerPath)){
+			return $strControllerPath;
+		}
+		
+		$strControllerPath =  $objXilzrConfig->arrEnvironment['strBaseDir'].'/Private/Classes/Controllers/'.$strSection.'/'.$strController.'.class.php';			
+		if(is_file($strControllerPath)){
+			return $strControllerPath;
+		}			
+	}	
+	
+	public function Run($strApplication){
 		
 		$arrInvalidCharacters = self::GetInvalidCharacters();
 	
-		$strApplication = str_replace($arrInvalidCharacters,'',$_GET['Application']);
 		$strSreen       = str_replace($arrInvalidCharacters,'',$_GET['Sreen']);
 		$strContext     = str_replace($arrInvalidCharacters,'',$_GET['Context']);
 		$streSection    = str_replace($arrInvalidCharacters,'',$_GET['Section']);
-		$strResource    = str_replace($arrInvalidCharacters,'',$_GET['Resource']);
+		$strController    = str_replace($arrInvalidCharacters,'',$_GET['Controller']);
 		$strAction      = str_replace($arrInvalidCharacters,'',$_GET['Action']);
 		$arrArguments   = explode('/',$_GET['Arguments']);
 		
@@ -36,15 +50,17 @@ class FrontController{
 		if(!isset($strContext)){
 			$strContext = 'HTML';
 		}
-
-		//$strResourcePath = $GLOBALS['strBaseDir'].'/Applications/'.$strApplication.'/Private/Classes/Resources/'.$strModule.'/'.$strSection.'/'.$strResource.'.class.php';
-
-		if(!file_exists($strResourcePath)){
+		
+		$strControllerPath = $this->GetControllerPath($strApplication, $strSection, $strController);
+		
+		if(!$strControllerPath){
 			header($strHTTPVersion.' 404 Not Found');
-			echo "Resource Not Found";
+			echo "File Not Found";
 			exit;
 		}
-
+		
+		$objSession = \Xizlr\System\Session::GetInstance();
+		$intApplicationId  = \Xizlr\Models\Applications\Application::GetApplicationIdFromHandle($strApplication);
 		
 	}
 

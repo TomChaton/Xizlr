@@ -24,6 +24,11 @@ arrXizlr = {
 				strPassword:'',
 				strPassKey:''
 			}
+		},
+		arrPageHandles{
+			'Index':'Index',
+			'AccessDenied':'AccessDenied',
+			'Login':'Login',
 		}
 	},
 	arrLocalMachine:{
