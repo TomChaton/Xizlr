@@ -1,8 +1,11 @@
 RewriteEngine on
 
-RewriteRule ^/Xi/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/(.*) /Index.php?Application=$1&Sreen=$2&Context=$3&Section=$4&Resource=$5&Action=$6&ArgumentList=$7 [L]
+RewriteRule ^/Xi/Method/([^/]+)/([^/]+)/([^/]+)/([^/]+)/(.*) /Index.php?ActionType=Method&Application=$1&Section=$2&Controller=$3&Action=$4&ArgumentList=$5 [L]
+RewriteRule ^/Xi/Event/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/(.*) /Index.php?ActionType=Event&Application=$1&Section=$2&Component=$3&Instance=4&Action=$5&ArgumentList=$5 [L]
 
-#/Xi/Memster/Desktop/HTML/Users/Accounts/Add/0/3
+#/Xi/Method/Memster/Users/Account/Save/1234
+#/Xi/Event/Pages/Page/Acount/View/456
+#/Xi/View/Memster/Users/AccountHeader/1/Edit/lalobo
 
 RewriteLog "/var/log/apache2/xizlr.rewrite.log"
 RewriteLogLevel 3

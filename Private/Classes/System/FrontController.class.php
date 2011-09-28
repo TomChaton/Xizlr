@@ -28,14 +28,14 @@ class FrontController{
 		}			
 	}	
 	
-	public function Run($strApplication){
+	public function Run(){
 		
 		$arrInvalidCharacters = self::GetInvalidCharacters();
 	
-		$strSreen       = str_replace($arrInvalidCharacters,'',$_GET['Sreen']);
+		$strApplication = str_replace($arrInvalidCharacters,'',$_GET['Application']);
 		$strContext     = str_replace($arrInvalidCharacters,'',$_GET['Context']);
-		$streSection    = str_replace($arrInvalidCharacters,'',$_GET['Section']);
-		$strController    = str_replace($arrInvalidCharacters,'',$_GET['Controller']);
+		$strSection     = str_replace($arrInvalidCharacters,'',$_GET['Section']);
+		$strController  = str_replace($arrInvalidCharacters,'',$_GET['Controller']);
 		$strAction      = str_replace($arrInvalidCharacters,'',$_GET['Action']);
 		$arrArguments   = explode('/',$_GET['Arguments']);
 		
