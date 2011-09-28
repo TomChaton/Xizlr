@@ -13,54 +13,43 @@ class FrontController{
 		return $arrInvalidCharacters;
 	}
 	
-	public function GetControllerPath($strApplication, $strSection, $strController){
-		$objXilzrConfig        = \Xizlr\Models\Config::GetInstance('Xizlr');
-		$objApplicationConfig  = \Xizlr\Models\Config::GetInstance($strApplication);
-		
-		$strControllerPath =  $objApplicationConfig->arrEnvironment['strBaseDir'].'/Private/Classes/Controllers/'.$strSection.'/'.$strController.'.class.php';
-		if(is_file($strControllerPath)){
-			return $strControllerPath;
-		}
-		
-		$strControllerPath =  $objXilzrConfig->arrEnvironment['strBaseDir'].'/Private/Classes/Controllers/'.$strSection.'/'.$strController.'.class.php';			
-		if(is_file($strControllerPath)){
-			return $strControllerPath;
-		}			
-	}	
+	private function ActionTypeAllowed($strActionType){
+		$srrAllowedActionTypes = array('Event','Method');
+		return in_array($strActionType,$srrAllowedActionTypes);
+	}
 	
 	public function Run(){
 		
 		$arrInvalidCharacters = self::GetInvalidCharacters();
-	
+		
+		$strActionType	= str_replace($arrInvalidCharacters,'',$_GET['ActionType']);
 		$strApplication = str_replace($arrInvalidCharacters,'',$_GET['Application']);
-		$strContext     = str_replace($arrInvalidCharacters,'',$_GET['Context']);
 		$strSection     = str_replace($arrInvalidCharacters,'',$_GET['Section']);
 		$strController  = str_replace($arrInvalidCharacters,'',$_GET['Controller']);
 		$strAction      = str_replace($arrInvalidCharacters,'',$_GET['Action']);
 		$arrArguments   = explode('/',$_GET['Arguments']);
 		
-		if(!$strApplication){
-			echo "This web application is misconfigured, please contact your administrator in order to fix it";
-			\Xizlr\System\Log::LogError('You need to set up the global variable $strApplication in the application\'s conf file');
-			exit;
-		}
-		$strFunctionPrefix = 'HTTPAction';
-		$strFunction    = $strFunctionPrefix.$strAction;
-		$strHTTPVersion = 'HTTP/1.1';
-		if(!isset($strContext)){
-			$strContext = 'HTML';
+		$strClassName = '\\'.$strApplication.'\\Controllers\\'.$strSection.'\\'.$strController;	
+		$objController = new $strClassName;
+		$strFunction = $strActionType.'_'.$strAction;
+		
+		if(!$this->ActionTypeAllowed($strActionType)){
+			throw new Exception('Uknown Action type');
 		}
 		
-		$strControllerPath = $this->GetControllerPath($strApplication, $strSection, $strController);
-		
-		if(!$strControllerPath){
-			header($strHTTPVersion.' 404 Not Found');
-			echo "File Not Found";
-			exit;
+		if($strActionType == 'Event'){
+			$objResource = new \Xizlr\Models\Resources\ResourceFactory::GetResource($_GET['ResourceId']);
+			array_unshift($objResource,$arrArguments);
 		}
 		
-		$objSession = \Xizlr\System\Session::GetInstance();
-		$intApplicationId  = \Xizlr\Models\Applications\Application::GetApplicationIdFromHandle($strApplication);
+		if(is_callable(array($objController, $strFunction))){
+				call_user_func_array(array($objController,$strFunction), $arrArguments);
+		}else{
+			throw new Exception('Cannot call that function');
+		}
+		
+		//$objSession = \Xizlr\System\Session::GetInstance();
+		//$intApplicationId  = \Xizlr\Models\Applications\Application::GetApplicationIdFromHandle($strApplication);
 		
 	}
 
