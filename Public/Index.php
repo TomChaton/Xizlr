@@ -5,6 +5,7 @@
 */
 require_once('../Private/Bootstrap.php');
 
-$objFrontController = new \Xizlr\System\FrontController;
-$objFrontController->Run();
+$objRouter = new \Xizlr\System\Router;
+$objRouter->Route($_SERVER["SCRIPT_URL"]);
+
 exit;

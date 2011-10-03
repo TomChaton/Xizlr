@@ -1,11 +1,27 @@
-RewriteEngine on
+<VirtualHost *:80>
+	DocumentRoot <XizlrPath>/Public
+	ServerName www.xizlr.org
 
-RewriteRule ^/Xi/Method/([^/]+)/([^/]+)/([^/]+)/([^/]+)/(.*) /Index.php?ActionType=Method&Application=$1&Section=$2&Controller=$3&Action=$4&ArgumentList=$5 [L]
-RewriteRule ^/Xi/Event/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/(.*) /Index.php?ActionType=Event&Application=$1&Section=$2&Controller=$3&ResourceId=$4&Action=$5&ArgumentList=$5 [L]
+	RewriteEngine on
+	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+	RewriteRule .* /Index.php [L]
 
-#/Xi/Method/Memster/Users/Account/Save/1234
-#/Xi/Event/Pages/Page/Acount/View/456
-#/Xi/View/Memster/Users/AccountHeader/1/Edit/lalobo
+	#RewriteLog "/var/log/apache2/xizlr.rewrite.log"
+	#RewriteLogLevel 3
 
-RewriteLog "/var/log/apache2/xizlr.rewrite.log"
-RewriteLogLevel 3
+	<Directory <XizlrPath>/Public>
+		Options FollowSymLinks                                                                 
+		AllowOverride None
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+
+	# alert, emerg.
+
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>

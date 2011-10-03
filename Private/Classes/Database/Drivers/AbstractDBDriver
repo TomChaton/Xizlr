@@ -1,0 +1,12 @@
+<?php
+/*
+* @author Ken Lalobo
+*
+*/
+
+namespace Xizlr\Database\Drivers;
+
+abstract class AbstractDBDriver{
+	abstract function Connect();
+	
+}
