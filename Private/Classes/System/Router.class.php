@@ -11,7 +11,7 @@ class Router{
 	public function Route($strURL){	
 		
 		if($strURL == '/'){
-			$objConfig = \Xizlr\Models\Config\ApplicationConfig::GetInstance($_SERVER['HTTP_HOST']);
+			$objConfig = \Xizlr\Models\Config\ApplicationConfig::GetInstance();
 		}else{
 			$arrURL = explode('/',$strURL);	
 		}

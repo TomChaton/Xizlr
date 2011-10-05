@@ -1,4 +1,4 @@
-arrMemCached = {
-	arrMemcachedServers:['localhost']
+{
+	"arrMemcachedServers":["localhost"]
 }
 

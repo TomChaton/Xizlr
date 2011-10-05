@@ -7,28 +7,36 @@
 namespace Xizlr\Models;
 
 abstract class AbstractModel{
-	protected $strUniqueIdName;
+    
+	protected $strIdFieldName;
+	protected $mxdID;
+	
 	protected $arrData = array();
 	private $strCurrentDriver;
-	private $objModelMapper;
 	
-	protected static $objConfigInstance;
-	
-	abstract static function GetInstance($strKey);
-	
-	abstract function Load();
-	
-	public function SetDriver($strDriver){
+	private $objModelMapper;	
+			
+	public function SetDBDriver($strDriver){
 		$this->strCurrentDriver = $strDriver;
+	}
+	
+	public function Load($mxdID){
+		return $this->LoadBy($this->strIdFieldName,$mxdID);
+	}
+	
+	public function LoadBy($strFieldName,$mxdFieldValue){		
+		$objDataMapper = $this->GetModelMapper();
+		$objDataMapper->SetSearchField($strFieldName,$mxdFieldValue);
+		$objDataMapper->SetLimit(1);
+		$this->arrData = $objDataMapper->Search();
 	}
 	
 	private function GetModelMapper(){
 		if($this->objModelMapper){
 			return $this->objModelMapper;
 		}elseif($this->strCurrentDriver){
-			$strMapperClassName = get_class($this).$this->strCurrentDriver.'Mapper';
-			\Xizlr\System\Logger::Log('debug','xizlr','Mapper is '.$strMapperClassName);
-			exit;
+			$strMapperClassName = '\\'.get_class($this).$this->strCurrentDriver.'Mapper';
+			\Xizlr\System\Logger::Log('debug','xizlr','Mapper is '.$strMapperClassName);			
 			$this->objModelMapper = new $strMapperClassName;
 			return $this->objModelMapper;
 		}else{
