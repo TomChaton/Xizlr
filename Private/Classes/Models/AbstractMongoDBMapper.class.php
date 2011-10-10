@@ -8,35 +8,37 @@ namespace Xizlr\Models;
 
 class AbstractMongoDBMapper extends \Xizlr\Models\AbstractModelMapper{
   
+  protected $objResults;
+  
   public function __construct(){  	
   	$this->strPrimaryKeyName = '_id';	
 		$this->objDBDriver = new \Xizlr\Database\Drivers\MongoDBDriver;  			
   }
-  
-  protected function SetPrimaryKeyName($strPrimaryKeyName){
-		$this->strPrimaryKeyName = $strPrimaryKeyName;
-  }
-  
-  protected function SetDatabaseName($strDatabaseName){
-		$this->strDatabaseName = $strDatabaseName;
-  }
-    
+      
   protected function SetCollectionName($strCollectionName){
-		$this->strContainerName = $strCollectionName;
+		$this->SetContainerName($strCollectionName);
   }
   
 	public function Search(){		
-		$this->objDBDriver->SetDatabase($this->strDatabaseName);
-		$this->objDBDriver->SetCollection($this->strContainerName);
-		$curReturn = $this->objDBDriver->Query(array('strApplicationDomainName' => 'www.helloworld.local'));
-print_r($this->arrSearchFields);		
-echo "<BR/>";		
-print_r($curReturn);		
-foreach ($curReturn as $obj) {
-		print_r($obj);
+		$this->objDBDriver->SetDatabaseName($this->strDatabaseName);
+		$this->objDBDriver->SetCollectionName($this->strContainerName);
+		$arrQuery = array(
+			'strType'  => 'find',
+			'arrQuery' => $this->arrSearchFields
+		);
+		$this->objResults = $this->objDBDriver->Query($this->arrSearchFields,null,$this->intLimit);
+		
+foreach ($this->objResults as $obj) {
+print_r($obj);
 }
-
 exit;
+	}
+	
+	public function GetRecord(){
+		$objResult = $this->objResults->getNext();
+echo "NEXT!";
+print_r($objResult);
+exit;		
 	}
 	
 	

@@ -11,7 +11,7 @@ abstract class AbstractModel{
 	protected $strIdFieldName;
 	protected $mxdID;
 	
-	protected $arrData = array();
+	protected $arrData   = array();
 	private $strCurrentDriver;
 	
 	private $objModelMapper;	
@@ -28,7 +28,12 @@ abstract class AbstractModel{
 		$objDataMapper = $this->GetModelMapper();
 		$objDataMapper->SetSearchField($strFieldName,$mxdFieldValue);
 		$objDataMapper->SetLimit(1);
-		$this->arrData = $objDataMapper->Search();
+		$objDataMapper->Search();
+		$this->arrData = $objDataMapper->GetRecord();
+		
+echo "HELLO!";	
+print_r($this->arrData);	
+exit;		
 	}
 	
 	private function GetModelMapper(){

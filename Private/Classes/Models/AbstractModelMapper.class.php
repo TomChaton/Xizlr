@@ -16,9 +16,22 @@ abstract class AbstractModelMapper{
 	
 	protected $objDBDriver;
 	 
-	private $intLimit = 1;
+	protected $intLimit = 1;
 	
 	abstract function Search();
+	abstract function GetRecord();
+	
+	protected function SetPrimaryKeyName($strPrimaryKeyName){
+		$this->strPrimaryKeyName = $strPrimaryKeyName;
+  }
+  
+	protected function SetDatabaseName($strDatabaseName){
+		$this->strDatabaseName = $strDatabaseName;
+	}
+	
+	protected function SetContainerName($strContainerName){
+		$this->strContainerName = $strContainerName;
+  }
 	
 	public function SetSearchField($strFieldName,$mxdFieldValue){
 		$this->arrSearchFields[$strFieldName] = $mxdFieldValue;

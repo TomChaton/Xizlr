@@ -1,1 +1,2 @@
-db.arrApplications.remove();
+use Xizlr;
+db.arrApplicationsConfig.drop();

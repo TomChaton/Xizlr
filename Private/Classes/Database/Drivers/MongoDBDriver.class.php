@@ -43,11 +43,11 @@ class MongoDBDriver extends \Xizlr\Database\Drivers\AbstractDBDriver{
 		}		
 	}
 	
-	public function SetDatabase($strDatabaseName){
+	public function SetDatabaseName($strDatabaseName){
 		$this->strDatabaseName = $strDatabaseName;
 	}
 	
-	public function SetCollection($strCollectionNAme){
+	public function SetCollectionName($strCollectionNAme){
 		$this->strContainerName = $strCollectionNAme;
 	}
 	
@@ -57,7 +57,18 @@ class MongoDBDriver extends \Xizlr\Database\Drivers\AbstractDBDriver{
 			error_log($this->strDatabaseName.'-'.print_r($objDatabase,1));
 			$objCollection = $objDatabase->selectCollection($this->strContainerName);
 			error_log($this->strContainerName.'-'.print_r($objCollection,1));
-			return $objCollection->find($arrQuery);
+			switch($arrQuery['strType']){
+				case 'find':
+					return $objCollection->find($arrQuery);		
+				break;
+				case 'findOne':
+					return $objCollection->findOne($arrQuery);		
+				break;
+				case '':
+					return $objCollection->find($arrQuery);		
+				break;
+			}
+			
 		}else{
 			return null;
 		}
