@@ -10,10 +10,24 @@ class Router{
 
 	public function Route($strURL){	
 		
-		if($strURL == '/'){
-			$objConfig = \Xizlr\Models\Config\ApplicationConfig::GetInstance();
+		$arrURL = $arrURL = explode('/',$strURL);
+		
+		if($arrURL[1]=='Xi'){
+		   $arrAction = array(
+            $strActionType	= str_replace($arrInvalidCharacters,'',$_GET['ActionType']);
+		      $strApplication = str_replace($arrInvalidCharacters,'',$_GET['Application']);
+		      $strSection     = str_replace($arrInvalidCharacters,'',$_GET['Section']);
+		      $strController  = str_replace($arrInvalidCharacters,'',$_GET['Controller']);
+		      $strAction      = str_replace($arrInvalidCharacters,'',$_GET['Action']);
+		      $arrArguments   = explode('/',$_GET['Arguments']);
+		   );
 		}else{
-			$arrURL = explode('/',$strURL);	
+		
+		   if($strURL == '/'){
+			   $objConfig = \Xizlr\Models\Config\ApplicationConfig::GetInstance();
+		   }else{
+		   }
+				
 		}
 		
 		/*

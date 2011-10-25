@@ -12,10 +12,14 @@ abstract class AbstractModel{
 	protected $mxdID;
 	
 	protected $arrData   = array();
-	private $strCurrentDriver;
+	private   $strCurrentDriver;
 	
 	private $objModelMapper;	
-			
+	
+	public function __get($strFiledName){
+	   return $this->arrData[$strFiledName];
+	}
+	
 	public function SetDBDriver($strDriver){
 		$this->strCurrentDriver = $strDriver;
 	}
@@ -29,11 +33,7 @@ abstract class AbstractModel{
 		$objDataMapper->SetSearchField($strFieldName,$mxdFieldValue);
 		$objDataMapper->SetLimit(1);
 		$objDataMapper->Search();
-		$this->arrData = $objDataMapper->GetRecord();
-		
-echo "HELLO!";	
-print_r($this->arrData);	
-exit;		
+		$this->arrData = $objDataMapper->GetRecord();	
 	}
 	
 	private function GetModelMapper(){
