@@ -16,8 +16,13 @@ abstract class AbstractModel{
 	
 	private $objModelMapper;	
 	
-	public function __get($strFiledName){
-	   return $this->arrData[$strFiledName];
+	public function GetData($strFieldName){
+	   return $this->arrData[$strFieldName];
+	}
+	
+	public function SetData($strFieldName, $mxdFielValue){
+		error_log('NAME '.print_r($strFieldName,1));
+		error_log('VALUE '.print_r($mxdFielValue,1));
 	}
 	
 	public function SetDBDriver($strDriver){

@@ -18,15 +18,34 @@ class Autoloader{
 		return self::$objAutoloaderInstance;
 	}
 	
-	private function Load($strClassName){
-		$arrClassParts = explode('\\',$strClassName);
+	private static function GetClassFilepath($strClassName){
+		$arrClassParts = explode('\\',str_replace(array('.',' '),'',$strClassName));
 		$strNamespace = array_shift($arrClassParts);
-	
-		if($strNamespace == 'Xizlr'){
+
+		if($strNamespace == 'Xizlr'){		
 			$strFilepath = __DIR__.'/../'.implode('/',$arrClassParts).'.class.php';
-			require_once($strFilepath);
 		}else{
-			return null;
+			$strFilepath = __DIR__.'/../../../../'.$strNamespace.'/Private/Classes/'.implode('/',$arrClassParts).'.class.php';
+		}
+		if(file_exists($strFilepath)){
+			return $strFilepath;
+		}
+	}
+	
+	public static function ClassExists($strClassName){
+		if($strClassFilepath = self::GetClassFilepath($strClassName)){
+			require_once($strClassFilepath);
+			return class_exists($strClassName);
+		}else{
+			return false;
+		}
+	}
+	
+	private function Load($strClassName){
+		if($strClassFilePath = self::GetClassFilepath($strClassName)){
+			require_once($strClassFilePath);
+		}else{
+			throw new \Exception('class '.$strClassName.' Not found');
 		}
 	}
 }

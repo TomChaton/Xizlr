@@ -13,14 +13,33 @@ class FrontController{
 		return $arrInvalidCharacters;
 	}
 	
-	private function ActionTypeAllowed($strActionType){
-		$srrAllowedActionTypes = array('Event','Method');
-		return in_array($strActionType,$srrAllowedActionTypes);
+	public function RunEvent($strApplicationHandle,$strSection,$strComponentName,$strComponentId, $strEvent,$arrArguments){
+		//\Xizlr\Components\ComponentFactory::Get($strSection, $strComponentName, $strComponentId);
+		
+		$strBaseName = '\\Components\\'.$strSection.'\\'.$strComponentName;
+		$strApplicationClassName = $strApplicationHandle.$strBaseName;
+		$strXizlrClassName       = 'Xizlr'.$strBaseName;
+		if(Autoloader::ClassExists($strApplicationClassName)){
+			$objComponent = new $strXizlrClassName;
+			echo "YAY!";
+		}elseif(Autoloader::ClassExists($strXizlrClassName)){
+			$objComponent = new $strXizlrClassName;
+			echo "YO!!";
+		}else{
+			throw new \Exception("Cannot run that event");
+		}
+		$objComponent->Load($strComponentId);
+		call_user_func_array(array($objComponent,'Xi_Event'.$strEvent),$arrArguments);
+		echo "HELLO TO THE WORLD EVENT ";	
+	}
+	
+	public function RunMethod($strApplicationHandle,$strSection,$strControllerName,$strAction,$arrArguments){
+		echo "HELLO TO THE WORLD METHOD";
 	}
 	
 	public function Run(){
 		
-		$arrInvalidCharacters = self::GetInvalidCharacters();
+/*		$arrInvalidCharacters = self::GetInvalidCharacters();
 		
 		$strActionType	= str_replace($arrInvalidCharacters,'',$_GET['ActionType']);
 		$strApplication = str_replace($arrInvalidCharacters,'',$_GET['Application']);
@@ -47,7 +66,7 @@ class FrontController{
 		}else{
 			throw new Exception('Cannot call that function');
 		}
-		
+	*/	
 		//$objSession = \Xizlr\System\Session::GetInstance();
 		//$intApplicationId  = \Xizlr\Models\Applications\Application::GetApplicationIdFromHandle($strApplication);
 		
