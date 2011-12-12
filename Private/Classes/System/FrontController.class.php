@@ -14,21 +14,8 @@ class FrontController{
 	}
 	
 	public function RunEvent($strApplicationHandle,$strSection,$strComponentName,$strComponentId, $strEvent,$arrArguments){
-		//\Xizlr\Components\ComponentFactory::Get($strSection, $strComponentName, $strComponentId);
 		
-		$strBaseName = '\\Components\\'.$strSection.'\\'.$strComponentName;
-		$strApplicationClassName = $strApplicationHandle.$strBaseName;
-		$strXizlrClassName       = 'Xizlr'.$strBaseName;
-		if(Autoloader::ClassExists($strApplicationClassName)){
-			$objComponent = new $strXizlrClassName;
-			echo "YAY!";
-		}elseif(Autoloader::ClassExists($strXizlrClassName)){
-			$objComponent = new $strXizlrClassName;
-			echo "YO!!";
-		}else{
-			throw new \Exception("Cannot run that event");
-		}
-		$objComponent->Load($strComponentId);
+		$objComponent = \Xizlr\Components\ComponentFactory::NewComponent($strApplicationHandle, $strSection, $strComponentName, $strComponentId);
 		call_user_func_array(array($objComponent,'Xi_Event'.$strEvent),$arrArguments);
 		echo "HELLO TO THE WORLD EVENT ";	
 	}

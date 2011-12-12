@@ -10,4 +10,3 @@ class Page extends \Xizlr\Controllers\Base{
 	
 	
 }
-?>
