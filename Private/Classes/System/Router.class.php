@@ -11,8 +11,7 @@ class Router{
 	public function Route($strURL){	
 		
 		$arrMatches = null;
-		$objApplicationConfig = \Xizlr\Models\Config\ApplicationConfig::GetInstance();
-		$strApplicationHandle = $objApplicationConfig->GetData('strApplicationHandle');
+		$strApplicationHandle = \Xizlr\Models\Config\ApplicationConfig::GetCurrentApplicationHandle();
 		
 		$objFrontController = new \Xizlr\System\FrontController;
 			
@@ -20,9 +19,9 @@ class Router{
 			$strSection       = 'Pages';
 			$strComponentName = 'Page';
 			$strComponentId   = 'Index';
-			$strAction        = 'View';
+			$strEvent         = 'View';
 			$arrArguments     = array();
-			
+
 			$objFrontController->RunEvent($strApplicationHandle,$strSection,$strComponentName,$strComponentId, $strEvent,$arrArguments);
 		}elseif(preg_match('/^\/Xi\/Method\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.*)/', $strURL, $arrMatches)){
 			// Are we calling a method?

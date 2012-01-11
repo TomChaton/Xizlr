@@ -21,8 +21,7 @@ abstract class AbstractModel{
 	}
 	
 	public function SetData($strFieldName, $mxdFielValue){
-		error_log('NAME '.print_r($strFieldName,1));
-		error_log('VALUE '.print_r($mxdFielValue,1));
+		\Xizlr\System\Logger::Log('debug','xizlr','Set data in model -> NAME: '.print_r($strFieldName,1).', VALUE: '.print_r($mxdFielValue,1));
 	}
 	
 	public function SetDBDriver($strDriver){
@@ -34,10 +33,11 @@ abstract class AbstractModel{
 	}
 	
 	public function LoadBy($strFieldName,$mxdFieldValue){		
+		\Xizlr\System\Logger::Log('debug','xizlr','Call load by function with arguments -> Field name: '.$strFieldName.', Field Value: '.$mxdFieldValue);
 		$objDataMapper = $this->GetModelMapper();
 		$objDataMapper->SetSearchField($strFieldName,$mxdFieldValue);
 		$objDataMapper->SetLimit(1);
-		$objDataMapper->Search();
+		$objDataMapper->Search();		
 		$this->arrData = $objDataMapper->GetRecord();	
 	}
 	

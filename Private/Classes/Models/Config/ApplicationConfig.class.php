@@ -25,4 +25,9 @@ class ApplicationConfig extends \Xizlr\Models\AbstractModel{
 		return self::$objApplicationConfigInstance ;
 	}	
 	
+	public static function GetCurrentApplicationHandle(){
+		$objApplicationConfigInstance = self::GetInstance();
+		return $objApplicationConfigInstance->GetData('strApplicationName');
+	}
+	
 }

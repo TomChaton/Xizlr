@@ -7,18 +7,18 @@
 namespace Xizlr\Models;
 
 class AbstractMongoDBMapper extends \Xizlr\Models\AbstractModelMapper{
-  
-  protected $objResults;
-  
-  public function __construct(){  	
-      $this->strPrimaryKeyName = '_id';	
+
+	protected $objResults;
+
+	public function __construct(){  	
+		$this->strPrimaryKeyName = '_id';	
 		$this->objDBDriver = new \Xizlr\Database\Drivers\MongoDBDriver;  			
-  }
+	}
       
-  protected function SetCollectionName($strCollectionName){
+	protected function SetCollectionName($strCollectionName){
 		$this->SetContainerName($strCollectionName);
-  }
-  
+ 	}
+
 	public function Search(){		
 		$this->objDBDriver->SetDatabaseName($this->strDatabaseName);
 		$this->objDBDriver->SetCollectionName($this->strContainerName);
@@ -33,6 +33,4 @@ class AbstractMongoDBMapper extends \Xizlr\Models\AbstractModelMapper{
 		$objResult = $this->objResults->getNext();
 		return $objResult;
 	}
-	
-	
 }

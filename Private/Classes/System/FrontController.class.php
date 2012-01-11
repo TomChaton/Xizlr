@@ -16,8 +16,27 @@ class FrontController{
 	public function RunEvent($strApplicationHandle,$strSection,$strComponentName,$strComponentId, $strEvent,$arrArguments){
 		
 		$objComponent = \Xizlr\Components\ComponentFactory::NewComponent($strApplicationHandle, $strSection, $strComponentName, $strComponentId);
-		call_user_func_array(array($objComponent,'Xi_Event'.$strEvent),$arrArguments);
-		echo "HELLO TO THE WORLD EVENT ";	
+		$intReturnCode = call_user_func_array(array($objComponent,'XiEvent_'.$strEvent),$arrArguments);
+echo $intReturnCode;
+exit;
+		$objHTTPStatus = new \Xizlr\HTTP\Status($intReturnCode);
+		header($objHTTPStatus->strHTTPVersion.' '.$objHTTPStatus->intHTTPCode.' '.$objHTTPStatus->strHTTPValue);
+		
+		if($intReturnCode == 200){
+			$objView = $objComponent->GetGeneratedView();
+			header('Content-Type: '.$objView->strMimeType.'; charset='.$objView->strCharacterSet);
+			header('Content-Length: '.$objView->intContentLength);
+			if($objView->CanVaryUserAgent()){
+				header('Vary: User-Agent');	
+			}
+			if($objView->IsCacheable()){
+				header("Expires: " . gmdate("D, d M Y H:i:s",time()+($objView->intCacheSeconds)) . " GMT");
+				header("Cache-Control: ".($objView->bolUsePublicCache?'public':'private').", max-age=".$objView->intCacheSeconds);
+			}
+			echo $objView->GetContent();
+		}else{
+			echo " Error Running Event ".$strEvent;	
+		}
 	}
 	
 	public function RunMethod($strApplicationHandle,$strSection,$strControllerName,$strAction,$arrArguments){
