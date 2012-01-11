@@ -15,13 +15,17 @@ class FrontController{
 	
 	public function RunEvent($strApplicationHandle,$strSection,$strComponentName,$strComponentId, $strEvent,$arrArguments){
 		
-		$objComponent = \Xizlr\Components\ComponentFactory::NewComponent($strApplicationHandle, $strSection, $strComponentName, $strComponentId);
+		$objComponent = \Xizlr\Components\ComponentFactory::NewComponent($strApplicationHandle, $strSection, $strComponentName, $strComponentId);	
 		$intReturnCode = call_user_func_array(array($objComponent,'XiEvent_'.$strEvent),$arrArguments);
-echo $intReturnCode;
-exit;
-		$objHTTPStatus = new \Xizlr\HTTP\Status($intReturnCode);
+
+		$objHTTPStatus = new \Xizlr\Net\HTTP\Status($intReturnCode);
 		header($objHTTPStatus->strHTTPVersion.' '.$objHTTPStatus->intHTTPCode.' '.$objHTTPStatus->strHTTPValue);
-		
+/*
+TO DO:
+Create the view system
+*/		
+echo $objHTTPStatus->strHTTPVersion.' '.$objHTTPStatus->intHTTPCode.' '.$objHTTPStatus->strHTTPValue;
+exit;		
 		if($intReturnCode == 200){
 			$objView = $objComponent->GetGeneratedView();
 			header('Content-Type: '.$objView->strMimeType.'; charset='.$objView->strCharacterSet);

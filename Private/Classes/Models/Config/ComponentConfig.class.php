@@ -13,14 +13,13 @@ class ComponentConfig extends \Xizlr\Models\AbstractModel{
 		$this->SetDBDriver('MongoDB');
 	}
 	
-	/* TO DO: USE THIS TO LOAD THE CONFIG */
 	
-/*	public function Load($mxdFieldValue){		
+	public function Load($strComponentHandle, $strComponentId){	
 		$objDataMapper = $this->GetModelMapper();
-		$objDataMapper->SetSearchField($strFieldName,$mxdFieldValue);
+		$objDataMapper->SetSearchField('strComponentHandle',$strComponentHandle);
+		$objDataMapper->SetSearchField('strComponentId',$strComponentId);
 		$objDataMapper->SetLimit(1);
 		$objDataMapper->Search();
 		$this->arrData = $objDataMapper->GetRecord();	
 	}	  	
-	*/
 }

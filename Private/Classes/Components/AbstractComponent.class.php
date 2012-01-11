@@ -7,18 +7,16 @@
 namespace Xizlr\Components;
 
 abstract class AbstractComponent{
-	private $strComponentId;
-	private $strComponentHandle;
+	protected $objComponentConfig;
 	
-	abstract function LoadConfig($strComponentId);
-	
-	/* 
-	TO DO: WORK OUT THE NAMESPACE AND THEN USE THAT TO LOAD THE CONFIG!!!
-	*/
-	
-	/*public function LoadConfig($strComponentId){
-		$this->strComponentHandle = get_class($this);
-		$this->strComponentId     = $strComponentId;
+	public function LoadConfig($strComponentId){
+		$strClassName = get_class($this);
+		$arrClassNameParts = explode('\\',$strClassName);
+		$strConfigClassName = $arrClassNameParts[0].'\\Models\\Config\\ComponentConfig';
+		$objComponentConfig = new $strConfigClassName;
 		
-	}*/
+		$strComponentHandle = end($arrClassNameParts);
+		$objComponentConfig->Load($strComponentHandle, $strComponentId);	
+		$this->objComponentConfig = $objComponentConfig;
+	}
 }

@@ -41,7 +41,7 @@ abstract class AbstractModel{
 		$this->arrData = $objDataMapper->GetRecord();	
 	}
 	
-	private function GetModelMapper(){
+	protected function GetModelMapper(){
 		if($this->objModelMapper){
 			return $this->objModelMapper;
 		}elseif($this->strCurrentDriver){
