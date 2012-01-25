@@ -7,22 +7,28 @@
 namespace Xizlr\Database\Drivers;
 
 abstract class AbstractDBDriver{
-	protected $bolUseSlave = true;
-	
-	private $arrMasterDB =array();
-	private $arrSlaveDBs =array();
 	
 	protected $strDatabaseName;
-	protected $strContainerName;
-	
+	protected $strHost;
+	protected $strUsername;
+	protected $strPassword;
+
 	abstract function Connect();
 	abstract function Query($mxdQuery);
-	
-	public function UseMaster(){
-		$this->bolUseSlave = false;
+
+	public function SetHost($strHost){
+		$this->strHost = $strHost;
 	}
-	
-	public function UseSlave(){
-		$this->bolUseSlave = true;
+
+	public function SetUser($strUsername){
+		$this->strUsername = $strUsername;
+	}
+
+	public function SetPass($strPassword){
+		$this->strPassword = $strPassword;
+	}
+
+	public function SetDatabaseName($strDatabaseName){
+		$this->strDatabaseName = $strDatabaseName;
 	}
 }

@@ -9,6 +9,8 @@ namespace Xizlr\Database\Drivers;
 class MongoDBDriver extends \Xizlr\Database\Drivers\AbstractDBDriver{
 	
 	private $objMongo;
+	
+	private $strCollectionName;
 		
 	private static $strSettingsFile = '/var/lib/xizlr/Mongo.conf.js';
 	private static $objMongoSettings;
@@ -43,20 +45,16 @@ class MongoDBDriver extends \Xizlr\Database\Drivers\AbstractDBDriver{
 		}		
 	}
 	
-	public function SetDatabaseName($strDatabaseName){
-		$this->strDatabaseName = $strDatabaseName;
-	}
-	
-	public function SetCollectionName($strCollectionNAme){
-		$this->strContainerName = $strCollectionNAme;
+	public function SetCollectionName($strCollectionName){
+		$this->strCollectionName = $strCollectionName;
 	}
 	
 	public function Query($arrQuery){
 		if($this->Connect()){		    
 			$objDatabase = $this->objMongo->selectDB($this->strDatabaseName); 
 			error_log($this->strDatabaseName.'-'.print_r($objDatabase,1));
-			$objCollection = $objDatabase->selectCollection($this->strContainerName);
-			error_log($this->strContainerName.'-'.print_r($objCollection,1));
+			$objCollection = $objDatabase->selectCollection($this->strCollectionName);
+			error_log($this->strCollectionName.'-'.print_r($objCollection,1));
 			switch($arrQuery['strType']){
 				case 'find':
 					return $objCollection->find($arrQuery);		
