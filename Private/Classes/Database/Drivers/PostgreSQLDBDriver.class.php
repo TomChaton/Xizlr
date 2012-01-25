@@ -10,10 +10,10 @@
 /**
  * Class MySQLDBDriver
  */
-class MySQLDBDriver extends \Xizlr\Database\Drivers\RelationalDBDriver{
+class PostgreSQLDBDriver extends \Xizlr\Database\Drivers\RelationalDBDriver{
 
 	public function __construct($objConfig = null){
-		parent::_construct(self::MySQL, $objConfig);
+		parent::_construct(self::PGSQL, $objConfig);
 	}
 	
 }
